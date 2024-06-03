@@ -26,7 +26,7 @@ const RegisterForm = () => {
   const [success, setSuccess] = useState<string | undefined>("");
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { email: "", password: "" , confirmPassword : "" },
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
@@ -35,7 +35,10 @@ const RegisterForm = () => {
     startTransition(async () => {
       const res = await Register(values);
       if (res.error) setError(res.error);
-      if (res.success) setSuccess(res.success);
+      if (res.success) {
+        setSuccess(res.success)
+        form.reset()
+      }
     });
   };
   return (
@@ -53,10 +56,11 @@ const RegisterForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <label className="text-sm font-medium leading-none" htmlFor={field.name}>Email</label>
                   <FormControl>
                     <Input
                       {...field}
+                      id="email"
                       disabled={isPending}
                       placeholder="john.doe@gmail.com"
                       type="email"
@@ -71,7 +75,25 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                   <label className="text-sm font-medium leading-none" htmlFor={field.name}>Password</label>
+                  <FormControl>
+                    <Input
+                      disabled={isPending}
+                      {...field}
+                      placeholder="********"
+                      type="password"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <label className="text-sm font-medium leading-none" htmlFor={field.name}>Confirm Password</label>
                   <FormControl>
                     <Input
                       disabled={isPending}

@@ -1,14 +1,14 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
 export const EmptyCard = () => {
     return (
-        <Card>
+        <Card className="h-96 flex items-center justify-center">
             <CardHeader>
                 <CardTitle>
-                    No Data
+                We hit a snag with results😔
                 </CardTitle>
-                <CardDescription>
-                Please serch for the other jobs.
+                <CardDescription className="text-center mt-4">
+                Try a different search above!
                 </CardDescription>
             </CardHeader>
         </Card>

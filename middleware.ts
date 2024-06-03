@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 import { adminRoutes, publicRoutes } from "@/constants/routes";
 
 type NextRequest = NextAuthRequest & {
-  user?: any; // Adjust the type as per your user object structure
+  user?: any;
 };
 
 const verifyToken = (exp: number) => {
@@ -27,14 +27,11 @@ export default function middleware(request: NextRequest) {
 
   // Handle token presence and appropriate redirects
   if (token && verifyToken(decodedToken?.exp)) {
-    request.user = decodedToken?.user;
     if (publicRoutes.includes(currentPath)) {
       // If token exists and user is on /login, redirect to dashboard
       return Response.redirect(new URL(DASHBOARD_URL, request.url));
     } else if (adminRoutes.includes(currentPath)) {
-      console.log("inside admin routes..");
-      if (decodedToken?.user?.isadmin) {
-        console.log(decodedToken?.exp);
+      if (decodedToken?.email) {
         return NextResponse.next();
       } else {
         return Response.redirect(new URL(DASHBOARD_URL, request.url));

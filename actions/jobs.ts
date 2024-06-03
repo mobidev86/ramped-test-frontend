@@ -9,7 +9,7 @@ export const Jobs = async (query: string, page = 1) => {
     const token = getCookie("token")
     try {
         const res = await axios.get(url, { headers: { "Authorization": `${token}`, 'Cache-Control': 'no-cache' } })
-        return { success: "success", data: res?.data?.data?.rows, pagination: res?.data?.data?.meta?.pages }
+        return { success: "success", data: res?.data?.data?.rows, pagination: { totalPages: res?.data?.data?.meta?.pages, currentPage: res?.data?.data?.meta?.page } }
     } catch (error: any) {
         return { error: error?.response?.data?.message }
     }

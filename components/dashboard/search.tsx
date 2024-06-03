@@ -2,37 +2,27 @@
 
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Dispatch, SetStateAction, useState } from "react";
-import { Jobs } from "@/actions/jobs";
-import { JobPost } from "@/types";
+import { Dispatch, SetStateAction } from "react";
 
 interface SearchProps {
-    setResult: Dispatch<SetStateAction<JobPost[]>>
-    setPagination: Dispatch<SetStateAction<number>>
     setQuery: Dispatch<SetStateAction<string>>
     query: string
+    onQuery : (page? : number) => void
 }
 
-export const Search = ({ setResult, setPagination, setQuery, query }: SearchProps) => {
+export const Search = ({  setQuery, query , onQuery }: SearchProps) => {
+
 
     const onSubmit = async (e: any) => {
         e.preventDefault()
-        const res = await Jobs(query)
-        if (res.data) {
-            setResult(res.data)
-            setPagination(res.pagination)
-        }
-        if (res.error) {
-            setResult([])
-            setPagination(1)
-        }
+        onQuery()
     }
 
     return (
         <div className="mx-auto">
             <form action="" className="flex items-center gap-x-8" onSubmit={(e) => onSubmit(e)}>
                 <Input
-                    className="w-[300px]"
+                    className="w-96"
                     value={query}
                     placeholder="Frontend Developer"
                     type="text"

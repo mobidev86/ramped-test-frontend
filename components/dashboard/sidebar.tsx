@@ -1,64 +1,52 @@
-import { JobPost } from "@/types"
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import Link from "next/link"
-import { Button } from "../ui/button"
+import { JobPost } from "@/types";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
+import { JobPoint } from "./job-point";
+import { ExternalLinkIcon } from "@radix-ui/react-icons";
+import {Cross1Icon} from '@radix-ui/react-icons'
+import { Dispatch, SetStateAction } from "react";
 
 interface SidebarProps {
-    job: JobPost
+  job: JobPost;
+  setSelectedJob: Dispatch<SetStateAction<JobPost | null>>;
 }
 
-export const Sidebar = ({ job }: SidebarProps) => {
-    return (
-        <Card>
-            <CardHeader className="w-full flex justify-between items-center">
-                <CardTitle>
-                    {job?.job_name}
-                </CardTitle>
-                <a href={job.post_apply_url} target="_blank">
-                    <Button variant={"link"} >
-                        Apply
-                    </Button>
-                </a>
-            </CardHeader>
-            <CardContent>
-                <ul className="flex flex-col gap-y-4 list-disc ml-4">
-                    <li>
-                        Company name : {job?.company_name}
-                    </li>
-                    <li>
-                        Job Type : {job.job_hours}
-                    </li>
-                    <li>
-                        Education : {job.minimum_education}
-                    </li>
-                    <li>
-                        Minimun Compensastion : {`$${job.minimum_compensation}`}
-                    </li>
-                    <li>
-                        Maximum Compensasion : {`$${job.maximum_compensation}`}
-                    </li>
-
-                    <li>
-                        Company URL : {job.company_url}
-                    </li>
-
-                    <li>
-                        City : {job.city}
-                    </li>
-
-                    <li>
-                        Region : {job.region}
-                    </li>
-
-                    <li>
-                        Country : {job.country}
-                    </li>
-
-                    <li>
-                        Description : {job.job_full_text}
-                    </li>
-                </ul>
-            </CardContent>
-        </Card>
-    )
-}
+export const Sidebar = ({ job , setSelectedJob}: SidebarProps) => {
+  return (
+    <Card className="relative">
+      <CardHeader className="flex justify-between items-center">
+        <CardTitle>{job?.job_name}</CardTitle>
+        <Button variant={"link"} className="absolute top-3 right-3" onClick={() => setSelectedJob(null)}>
+            <Cross1Icon />
+        </Button>
+      </CardHeader>
+      <CardContent>
+        <ul className="flex flex-col gap-y-4 list-disc ml-4">
+          {Object.entries(job?.content)?.map(([key, value]) => (
+            <JobPoint key={key} title={key} value={value} />
+          ))}
+        </ul>
+      </CardContent>
+      <CardFooter>
+        <a
+          href={job.post_apply_url}
+          target="_blank"
+          className="inline-block w-ful mx-auto"
+        >
+          <Button className="flex gap-x-2">
+            <span>Apply</span>
+            <span>
+              <ExternalLinkIcon />
+            </span>
+          </Button>
+        </a>
+      </CardFooter>
+    </Card>
+  );
+};

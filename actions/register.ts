@@ -11,10 +11,9 @@ export const Register = async (values: z.infer<typeof RegisterSchema>) => {
     if (!validatedFields.success) return { error: "Invalid Fields!" }
 
     try {
-        const res = await axios.post(Endpoints.REGISTER, validatedFields.data)
-        return {success : res?.data?.message}
-    } catch (error : any) {
-        console.log(error?.response?.data?.message)
-        return {error : error?.response?.data?.message}
+        const res = await axios.post(Endpoints.REGISTER, { email: validatedFields.data.email, password: validatedFields.data.password })
+        return { success: res?.data?.message }
+    } catch (error: any) {
+        return { error: error?.response?.data?.message }
     }
 };

@@ -11,7 +11,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
@@ -36,7 +35,6 @@ const LoginForm = () => {
     setSuccess("");
     startTransition(async () => {
       const res = await Login(values);
-      console.log(res , "CLient res")
       if (res?.error) setError(res?.error);
       if (res?.success) {
         router.push("/dashboard")
@@ -46,7 +44,7 @@ const LoginForm = () => {
   return (
     <CardWrapper
       headerLabel="Welcome Back"
-      backButtonLabel="Don't have an account ?"
+      backButtonLabel="Don't have an account?"
       backButtonHref="/auth/register"
       title="Login"
     >
@@ -58,7 +56,7 @@ const LoginForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <label className="text-sm font-medium leading-none" htmlFor={field.name}>Email</label>
                   <FormControl>
                     <Input
                       {...field}
@@ -76,7 +74,7 @@ const LoginForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <label className="text-sm font-medium leading-none" htmlFor={field.name}>Password</label>
                   <FormControl>
                     <Input
                       disabled={isPending}
